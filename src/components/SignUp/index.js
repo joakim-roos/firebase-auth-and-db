@@ -3,6 +3,14 @@ import { Link, withRouter } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
 
+const INITIAL_STATE = {
+  username: '',
+  email: '',
+  passwordOne: '',
+  passwordTwo: '',
+  error: null,
+};
+
 const SignUpPage = () => {
   return (
   <div>
@@ -13,16 +21,8 @@ const SignUpPage = () => {
 }
 
 function SignUpFormBase(props) {
-
-  const INITIAL_STATE = {
-    username: '',
-    email: '',
-    passwordOne: '',
-    passwordTwo: '',
-    error: null,
-  };
   const [input, setInput] = useState(INITIAL_STATE)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
 
   const isInvalid =
     input.passwordOne !== input.passwordTwo ||
@@ -30,11 +30,11 @@ function SignUpFormBase(props) {
     input.email === '' ||
     input.username === '';
   
-  const onChange = event => {
-    setInput({...input, [event.target.name]: event.target.value})
+  const onChange = e => {
+    setInput({...input, [e.target.name]: e.target.value})
   }
 
-  const onSubmit = event => {
+  const onSubmit = e => {
     const email = input.email
     const password = input.passwordOne
     props.firebase
@@ -47,7 +47,7 @@ function SignUpFormBase(props) {
       setError(error)
       })
     
-    event.preventDefault();
+    e.preventDefault();
 
   }
 

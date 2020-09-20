@@ -1,8 +1,3 @@
-import React from 'react'
+import AuthUserContext from './context';
 
-const Session = () => (
-  <div>
-    App
-  </div>
-)
-export default Session
+export { AuthUserContext };

@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes.js'
+import { AuthUserContext } from '../Session'
+
+import SignOutButton from '../SignOut'
+
+const Navigation = () => {
+  let authUser = useContext(AuthUserContext)
+  return (
+    <div>
+      {authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+    </div>
+  )
+}
 
 
-const Navigation = () => (
+const NavigationAuth = () => (
   <div>
     <ul>
-      <li>
-        <Link to={ROUTES.SIGN_IN}>
-          Sign In
-        </Link>
-      </li>
       <li>
         <Link to={ROUTES.LANDING}>
           Landing
@@ -27,11 +34,19 @@ const Navigation = () => (
         </Link>
       </li>
       <li>
-        <Link to={ROUTES.ADMIN}>
-          Admin
-        </Link>
+        <SignOutButton />
       </li>
     </ul>
   </div>
+)
+
+const NavigationNonAuth = () => (
+  <ul>
+    <li>
+      <Link to={ROUTES.LANDING}>Landing</Link>
+    </li> <li>
+      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    </li>
+  </ul>
 )
 export default Navigation
