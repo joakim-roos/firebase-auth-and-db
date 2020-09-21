@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { SignUpLink } from '../SignUp'
+import { PasswordForgetLink } from '../PasswordForget'
 import { useFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 
@@ -18,6 +19,7 @@ const SignInPage = () => {
     </div>
       <SignInForm />
       <SignUpLink />
+      <PasswordForgetLink />
     </>
   )
 }
@@ -35,7 +37,7 @@ function SignInFormBase(props) {
   const onSubmit = e => {
     const email = input.email
     const password = input.password
-
+    console.log(input)
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
