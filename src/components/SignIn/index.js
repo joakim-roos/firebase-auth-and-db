@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { SignUpLink } from '../SignUp'
-import { withFirebase } from '../Firebase'
+import { useFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 
 const INITIAL_STATE = {
@@ -25,7 +25,7 @@ const SignInPage = () => {
 function SignInFormBase(props) {
   const [input, setInput] = useState(INITIAL_STATE)
   const [error, setError] = useState(null)
-
+  const firebase = useFirebase()
   const isInvalid = input.password === '' || input.email === '';
 
   const onChange = e => {
@@ -36,7 +36,7 @@ function SignInFormBase(props) {
     const email = input.email
     const password = input.password
 
-    props.firebase
+    firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         setInput({ ...INITIAL_STATE })
@@ -65,7 +65,7 @@ function SignInFormBase(props) {
   )
 }
 
-const SignInForm = withRouter(withFirebase(SignInFormBase))
+const SignInForm = withRouter(SignInFormBase)
 
 export default SignInPage
 export { SignInForm };

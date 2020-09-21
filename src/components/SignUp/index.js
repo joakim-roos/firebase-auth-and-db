@@ -1,7 +1,7 @@
-import React, {useState, useContext} from 'react'
+import React, {useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
-import { withFirebase } from '../Firebase'
+import { useFirebase } from '../Firebase'
 
 const INITIAL_STATE = {
   username: '',
@@ -21,6 +21,7 @@ const SignUpPage = () => {
 }
 
 function SignUpFormBase(props) {
+  const firebase = useFirebase()
   const [input, setInput] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
 
@@ -37,7 +38,7 @@ function SignUpFormBase(props) {
   const onSubmit = e => {
     const email = input.email
     const password = input.passwordOne
-    props.firebase
+    firebase
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
         setInput({ ...INITIAL_STATE })
@@ -97,7 +98,7 @@ function SignUpFormBase(props) {
   )
 }
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase))
+const SignUpForm = withRouter(SignUpFormBase)
 
 const SignUpLink = () => (
   <p>
