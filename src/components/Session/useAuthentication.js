@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useFirebase } from '../Firebase';
 
 export const useAuthentication = (props) => {
-  let firebase = useFirebase();
+  const firebase = useFirebase();
 
   const [authUser, setAuthUser] = useState(null)
 
@@ -13,9 +13,8 @@ export const useAuthentication = (props) => {
           ? setAuthUser({ authUser })
           : setAuthUser(null);
       });
-    return () => {
-      listener()
-    }
+    return () => listener()
+
   }, [firebase.auth])
   return authUser
 }
