@@ -7,6 +7,7 @@ import SignOutButton from '../SignOut'
 
 const Navigation = () => {
   let authUser = useContext(AuthUserContext)
+  console.log(authUser)
   return (
     <div>
       {authUser ? <NavigationAuth /> : <NavigationNonAuth />}
@@ -32,6 +33,9 @@ const NavigationAuth = () => (
         <Link to={ROUTES.ACCOUNT}>
           Account
         </Link>
+      </li>
+      <li>
+        <Link to={ROUTES.ADMIN}>Admin</Link>
       </li>
       <li>
         <SignOutButton />

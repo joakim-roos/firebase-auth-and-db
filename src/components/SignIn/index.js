@@ -37,9 +37,11 @@ function SignInFormBase(props) {
   const onSubmit = e => {
     const email = input.email
     const password = input.password
-    console.log(input)
+
+
     firebase
       .doSignInWithEmailAndPassword(email, password)
+
       .then(() => {
         setInput({ ...INITIAL_STATE })
         props.history.push(ROUTES.HOME)

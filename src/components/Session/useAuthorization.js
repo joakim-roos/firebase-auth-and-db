@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect } from 'react'
 import { useFirebase } from '../Firebase'
 
 import { useHistory } from 'react-router-dom';
@@ -10,14 +10,32 @@ const useAuthorization = condition => {
   const history = useHistory()
 
   useEffect(() => {
-    const listener =
-      firebase.auth.onAuthStateChanged(
-        authUser => {
-          if (!condition(authUser)) {
-            history.push(ROUTES.SIGN_IN);
-          }
+    console.log('useEffect inside useAuthoriz ran');
+    const listener = firebase.auth.onAuthStateChanged(
+      authUser => {
+
+        if (authUser) {
+          firebase
+            .user(authUser.uid)
+            .once('value')
+            .then(snapshot => {
+
+              const dbUser = snapshot.val();
+
+              if (!dbUser.roles) dbUser.roles = {}
+
+              authUser = {
+                uid: authUser.uid,
+                email: authUser.email,
+                ...dbUser
+              }
+              console.log(authUser)
+              if (!condition(authUser)) history.push(ROUTES.SIGN_IN)
+            })
         }
-      )
+        else history.push(ROUTES.SIGN_IN);
+      }
+    )
     return () => listener()
   })
 }

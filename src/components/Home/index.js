@@ -1,15 +1,15 @@
+
 import React, { useContext } from 'react';
-import { useAuthorization } from '../Session';
-import AuthUserContext from '../Session/context'
+import { AuthUserContext, useAuthorization } from '../Session';
+
 
 const HomePage = () => {
   const condition = authUser => !!authUser;
   const authUser = useContext(AuthUserContext)
-
-  const useAuth = useAuthorization(condition);
+  useAuthorization(condition);
 
   if (condition(authUser)) return <div>authorized</div>
-  if (!condition(authUser)) return null
+  return null
 };
 
 export default HomePage;

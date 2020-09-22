@@ -1,6 +1,7 @@
 import React, {useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
+import * as ROLES from '../../constants/roles';
 import { useFirebase } from '../Firebase'
 
 const INITIAL_STATE = {
@@ -9,6 +10,7 @@ const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
   error: null,
+  isAdmin: false,
 };
 
 const SignUpPage = () => {
@@ -35,11 +37,32 @@ function SignUpFormBase(props) {
     setInput({...input, [e.target.name]: e.target.value})
   }
 
+  const onChangeCheckbox = e => {
+    setInput({...input, [e.target.name]: e.target.checked });
+  };
+
   const onSubmit = e => {
     const email = input.email
     const password = input.passwordOne
+    const username = input.username
+    const isAdmin = input.isAdmin
+
+    const roles = {};
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
+
     firebase
       .doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        return firebase
+          .user(authUser.user.uid)
+          .set({
+            username,
+            email, 
+            roles
+          })
+      })
       .then(authUser => {
         setInput({ ...INITIAL_STATE })
         props.history.push(ROUTES.HOME)
@@ -85,6 +108,16 @@ function SignUpFormBase(props) {
         type="password"
         placeholder="Confirm Password"
       />
+
+      <label>
+        Admin:
+          <input
+          name="isAdmin"
+          type="checkbox"
+          checked={input.isAdmin}
+          onChange={(e) => onChangeCheckbox(e)}
+        />
+      </label>
 
       <button
         type="submit"

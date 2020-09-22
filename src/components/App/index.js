@@ -17,7 +17,6 @@ import * as ROUTES from '../../constants/routes.js';
 
 function App() {
   const authUser = useAuthentication()
-
   return (
     <AuthUserContext.Provider value={authUser} >
       <Router>
